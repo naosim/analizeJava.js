@@ -1,0 +1,20 @@
+{
+  "name": "analizejava",
+  "version": "1.0.0",
+  "description": "Javaのファイルを漁ってクラス構成を分析する --- ## 実行環境 node.js 古いバージョンでも動くようにする。モダンな書き方はアロー式を使う程度にする",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/naosim/analizeJava.js.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/naosim/analizeJava.js/issues"
+  },
+  "homepage": "https://github.com/naosim/analizeJava.js#readme",
+  "type": "module"
+}

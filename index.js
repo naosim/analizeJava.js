@@ -20,30 +20,19 @@ Javaのファイルを漁ってクラス構成を分析する
 ]
 */
 
-import { exec } from "child_process";
 import fs from "fs";
-// const exec = require('child_process').exec
-// const fs = require('fs')
-import { getJavaData } from "./logic.mjs";
+import { searchFiles } from "./src/searchFiles.mjs";
+import { getJavaData } from "./src/logic.mjs";
 
 // ★ 各自設定をお願いします ★
 var CONFIG = {
-  ROOT_PATH: "./", // findを開始するパス
+  ROOT_PATH: process.argv[2], // findを開始するパス
   IS_DDD: true, // ドメイン駆動設計特有の項目有無
 };
 
 // メイン処理
-exec("find " + CONFIG.ROOT_PATH + ' -name "*.java"', (err, stdout, stderr) => {
-  if (err) {
-    console.log(`stderr: ${stderr}`);
-    return;
-  }
-  var javaDataList = stdout
-    .trim()
-    .split("\n")
-    .map((v) => ({ filePath: v, sourceCode: fs.readFileSync(v, "utf8") }))
-    .map((v) => getJavaData(v, CONFIG.IS_DDD));
-
-  // JSON出力
-  console.log(JSON.stringify(javaDataList));
-});
+var javaDataList = searchFiles(CONFIG.ROOT_PATH, ".java")
+  .map((v) => ({ filePath: v, sourceCode: fs.readFileSync(v, "utf8") }))
+  .map((v) => getJavaData(v, CONFIG.IS_DDD));
+// JSON出力
+console.log(JSON.stringify(javaDataList));

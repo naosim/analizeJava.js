@@ -1,6 +1,6 @@
 # analizeJava.js
 Javaのファイルを漁ってクラス構成を分析する
----
+
 ## 実行環境 node.js
 古いバージョンでも動くようにする。モダンな書き方はアロー式を使う程度にする
 
@@ -20,4 +20,9 @@ Javaのファイルを漁ってクラス構成を分析する
     domainRepositoryName?: string //DDDあり、かつ、isDataSourceRepositoryがtrueのとき
   },...
 ]
+```
+
+## usage
+```
+node index.js ../path/to/java/project
 ```
