@@ -127,7 +127,7 @@ export function getApiEndPoints(sourceCode) {
       } else {
         return value;
       }
-    })
+    }).map(v => v.split('"').join(''))
 }
 
 
