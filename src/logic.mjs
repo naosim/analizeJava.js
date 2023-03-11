@@ -64,9 +64,12 @@ export function getJavaData(obj, isDDD) {
       }
     }
   });
-  result.apiEndPoints = getApiEndPoints(obj.sourceCode);
-  result.apiEndPointLength = result.apiEndPoints.length; // apiEndPointsから計算すればいいけど、おまけ
-  result.fullPackage = result.package + "." + result.className;
+
+  if (isDDD) {
+    result.apiEndPoints = getApiEndPoints(obj.sourceCode);
+    result.apiEndPointLength = result.apiEndPoints.length; // apiEndPointsから計算すればいいけど、おまけ
+    result.fullPackage = result.package + "." + result.className;
+  }
 
   if (isDDD && result.isDataSourceRepository) {
     result.domainRepositoryName = detectDomainRepositoryName(
