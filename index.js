@@ -20,19 +20,12 @@ Javaのファイルを漁ってクラス構成を分析する
 ]
 */
 
-import fs from "fs";
-import { searchFiles } from "./src/searchFiles.mjs";
-import { getJavaData } from "./src/logic.mjs";
+import { analizeJava } from "./src/analizeJava.mjs";
 
-// ★ 各自設定をお願いします ★
-var CONFIG = {
-  ROOT_PATH: process.argv[2], // findを開始するパス
-  IS_DDD: true, // ドメイン駆動設計特有の項目有無
-};
+const rootPath = process.argv[2]; // findを開始するパス
+const isDDD = true; // ドメイン駆動設計特有の項目有無
 
 // メイン処理
-var javaDataList = searchFiles(CONFIG.ROOT_PATH, ".java")
-  .map((v) => ({ filePath: v, sourceCode: fs.readFileSync(v, "utf8") }))
-  .map((v) => getJavaData(v, CONFIG.IS_DDD));
+var javaDataList = analizeJava(rootPath, isDDD);
 // JSON出力
 console.log(JSON.stringify(javaDataList));

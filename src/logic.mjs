@@ -1,3 +1,5 @@
+import {pluginFunc} from "./plugin.mjs"
+
 /**
  * javaのソースコードから情報を取り出す
  * @param {{filePath: string, sourceCode: string}} obj
@@ -61,6 +63,8 @@ export function getJavaData(obj, isDDD) {
       }
     }
   });
+  result.apiEndPoints = getApiEndPoints(obj.sourceCode);
+  result.apiEndPointLength = result.apiEndPoints.length; // apiEndPointsから計算すればいいけど、おまけ
   result.fullPackage = result.package + "." + result.className;
 
   if (isDDD && result.isDataSourceRepository) {
@@ -68,6 +72,12 @@ export function getJavaData(obj, isDDD) {
       result.className,
       result.implements
     );
+  }
+
+  try {
+    result = pluginFunc({...obj}, result);
+  } catch(e) {
+    // nop
   }
 
   return result;
@@ -82,6 +92,49 @@ export function getClassName(filePath) {
   var lastSegment = filePath.split("/").pop();
   return lastSegment.split(".")[0];
 }
+
+/**
+ * APIのエンドポイント（URL）を取得する
+ * @param {string} sourceCode 
+ * @returns {string[]} エンドポイントのパス。1クラスに複数ある場合もあるため配列で返す。
+ */
+export function getApiEndPoints(sourceCode) {
+  var segs = sourceCode.split('@RequestMapping(');
+  if(segs.length == 1) {
+    return []; // エンドポイントなし
+  }
+
+  return segs.slice(1)
+    .map(v => v.split(")")[0])
+    .map(v => {
+      // URLのリストを取得する
+      // URLはパタンが3つある
+      // 通常：@RequestMapping(value = "/path/to/api", ...
+      // 変数：@RequestMapping(value = URL, ...
+      // 変数と文字列：@RequestMapping(value = URL + /sub/path, ...
+      var value = v.split('value = ')[1].split(',')[0].trim();
+      if(value.indexOf('"') == -1) {
+        // 変数のみ。URLなど 
+        return getStringValue(value, sourceCode);
+        // return '変数のみ。URLなど ' + value;
+      } else if(value.indexOf('+') != -1) {
+        // 変数 + 文字列。URL + "hoge" など
+        return getStringValue(value.split('+')[0].trim(), sourceCode) + value.split('"')[1];
+      } else {
+        return value;
+      }
+    })
+}
+
+
+// ソースコードから指定した変数名の値を取得する
+function getStringValue(variableName, code) {
+  return code.split('\n')
+    .filter(v => v.indexOf('String ' + variableName) != -1)
+    .map(v => v.split('"')[1])
+    .join().trim();
+}
+
 
 /**
  * リポジトリのクラス名からドメイン層リポジトリを推定する
