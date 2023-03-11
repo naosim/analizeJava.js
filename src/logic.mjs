@@ -23,6 +23,7 @@ export function getJavaData(obj, isDDD) {
     result.isRestController = false;
     result.isBatchMessageEndpoint = false;
     result.isDiComponent = false;
+    result.domainRepositoryName = null;
   }
 
   // ソースを1行ずつ解析する
