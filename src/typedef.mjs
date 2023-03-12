@@ -6,7 +6,7 @@
  * @property {Meta} meta 
  * @property {JavaClass[]} classes
  */
-export var AnalizeJavaOutput;
+export var JavaClassesJSONSchema;
 
 /**
  * @typedef Meta
