@@ -16,5 +16,8 @@
     "url": "https://github.com/naosim/analizeJava.js/issues"
   },
   "homepage": "https://github.com/naosim/analizeJava.js#readme",
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "jsdoc-to-markdown": "^8.0.0"
+  }
 }

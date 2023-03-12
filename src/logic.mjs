@@ -1,8 +1,11 @@
 import {pluginFunc} from "./plugin.mjs"
+import {JavaClass} from "./typedef.mjs"
 
 /**
  * javaのソースコードから情報を取り出す
  * @param {{filePath: string, sourceCode: string}} obj
+ * @param {boolean} isDDD
+ * @returns {JavaClass}
  */
 export function getJavaData(obj, isDDD) {
   var result = {
